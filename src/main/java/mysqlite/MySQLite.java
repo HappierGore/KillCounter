@@ -38,9 +38,9 @@ public class MySQLite {
      * @param isItem It's an item?
      */
     public void updateTotalMobs(String UUID, int totalMobs, boolean isItem) {
-        
+
         String table = isItem ? "ItemsKills" : "UsersKills";
-        
+
         String sql = "INSERT OR REPLACE INTO " + table + "(uuid,totalMobs) VALUES(?,?)";
         //INSERT OR REPLACE INTO UsersKills(uuid,totalMobs) VALUES("TE",5)
         System.out.println(sql);
@@ -57,4 +57,5 @@ public class MySQLite {
             System.out.println(e.getMessage());
         }
     }
+
 }

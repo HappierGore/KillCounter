@@ -1,7 +1,8 @@
 package placeholders;
 
 import de.tr7zw.nbtapi.NBTItem;
-import kills.Kills;
+import kills.ItemKills;
+import kills.UsersKills;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,17 +45,17 @@ public class PlaceHolders extends PlaceholderExpansion {
         if (player == null) {
             return "";
         }
-        
+
         String pUUID = player.getUniqueId().toString();
-        
+
         if (params.equals("players")) {
-            return Integer.toString(Kills.playerKills.get(pUUID).getPlayers());
+            return Integer.toString(UsersKills.playerKills.get(pUUID).get("players"));
         }
         if (params.equals("totalMobs")) {
-            return Integer.toString(Kills.playerKills.get(pUUID).getTotalMobs());
+            return Integer.toString(UsersKills.playerKills.get(pUUID).get("totalMobs"));
         }
         if (params.equals("zombies")) {
-            return Integer.toString(Kills.playerKills.get(pUUID).getZombies());
+            return Integer.toString(UsersKills.playerKills.get(pUUID).get("zombies"));
         }
         if (params.contains("weapon")) {
             final ItemStack item = player.getInventory().getItemInMainHand();
@@ -67,16 +68,16 @@ public class PlaceHolders extends PlaceholderExpansion {
 
             System.out.println("UUID DE ARMA DEL ASESINO " + uuid);
 
-            System.out.println("Data: " + Kills.getItemMapStr());
+            System.out.println("Data: " + ItemKills.getItemMapStr());
 
             if (params.endsWith("players")) {
-                return Integer.toString(Kills.objKills.get(uuid).getPlayers());
+                return Integer.toString(ItemKills.itemKills.get(uuid).get("players"));
             }
             if (params.endsWith("totalMobs")) {
-                return Integer.toString(Kills.objKills.get(uuid).getTotalMobs());
+                return Integer.toString(ItemKills.itemKills.get(uuid).get("totalMobs"));
             }
             if (params.endsWith("zombies")) {
-                return Integer.toString(Kills.objKills.get(uuid).getZombies());
+                return Integer.toString(ItemKills.itemKills.get(uuid).get("zombies"));
             }
         }
         return null;

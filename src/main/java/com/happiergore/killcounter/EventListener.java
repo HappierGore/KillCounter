@@ -18,7 +18,7 @@ import placeholders.PlaceHolders;
  * @author HappierGore
  */
 public final class EventListener extends JavaPlugin implements Listener {
-
+    
     @Override
     public void onEnable() {
 
