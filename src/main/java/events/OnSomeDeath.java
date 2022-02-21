@@ -18,8 +18,8 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author HappierGore
  */
-public class OnSomeDeath{
-    
+public class OnSomeDeath {
+
     public static void registerKill(EntityDeathEvent e, String path) {
 
         if (!(e.getEntity().getKiller() instanceof Player)) {
@@ -32,9 +32,8 @@ public class OnSomeDeath{
         UsersKills pKills = UsersKills.getObj(player.getUniqueId().toString());
 
         pKills.add(e.getEntityType());
-        pKills.updateDB(path);
-        
-        
+        pKills.updateDB(path, false);
+
         player.sendMessage("Player Stats:");
         player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Mobs totales asesinados: %killCounter_totalMobs%"));
         player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Zombies totales asesinados: %killCounter_zombies%"));
@@ -55,11 +54,11 @@ public class OnSomeDeath{
         }
 
         String uuid = nbti.getString("UUID");
-        
+
         ItemKills objKills = ItemKills.getObj(uuid);
 
         objKills.add(e.getEntityType());
-        objKills.updateDB(path);
+        objKills.updateDB(path, true);
 
         player.sendMessage("Weapon Stats:");
         player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Mobs totales asesinados: %killCounter_weapon_totalMobs%"));

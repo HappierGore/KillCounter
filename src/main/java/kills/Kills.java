@@ -1,21 +1,75 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package kills;
-
-import java.util.Map;
+import mysqlite.MySQLite;
 import org.bukkit.entity.EntityType;
 
 /**
  *
  * @author HappierGore
  */
-public interface Kills {
+public abstract class Kills {
 
-    public int get(String request);
+    private int players = 0;
+    private int zombies = 0;
 
-    public void add(EntityType entityType);
+    private int totalMobs = 0;
 
-    public void updateDB(String dbPath);
+    private final String UUID;
+
+    //*****************************
+    //INTERFACE
+    //*****************************
+    public int get(String request) {
+        switch (request.toLowerCase()) {
+            case "players" -> {
+                return this.players;
+            }
+            case "zombies" -> {
+                return this.zombies;
+            }
+            case "totalmobs" -> {
+                return this.totalMobs;
+            }
+            default -> {
+                return 0;
+            }
+        }
+    }
+
+    public void add(EntityType entityType) {
+        switch (entityType) {
+            case PLAYER -> {
+                totalMobs++;
+                players++;
+            }
+            case ZOMBIE -> {
+                totalMobs++;
+                zombies++;
+            }
+            default -> {
+                totalMobs++;
+            }
+        }
+    }
+
+    public void updateDB(String dbPath, boolean isItem) {
+        MySQLite sql = new MySQLite(dbPath.replace('\\', '/') + "/KillCounter.db");
+        sql.updateTotalMobs(this.UUID, this.totalMobs, isItem);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Kills{");
+        sb.append("totalMobs=").append(totalMobs);
+        sb.append(", players=").append(players);
+        sb.append(", zombies=").append(zombies);
+        sb.append(",Memory=").append(super.toString());
+        sb.append('}');
+        return sb.toString();
+    }
+    //Constructor
+    public Kills(String UUID) {
+        this.UUID = UUID;
+    }
+
 }
