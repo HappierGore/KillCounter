@@ -1,0 +1,17 @@
+name: KillCounter
+version: 1.0
+main: com.happiergore.killcounter.EventListener
+api-version: 1.18
+author: HappierGore
+discord: HappierGore#1197
+depend: [PlaceholderAPI]
+prefix: KillCounter 1.0
+website: https://github.com/HappierGore
+softdepend: [PlaceholderAPI]
+depend: [NBTAPI]
+commands:
+  newitem:
+    description: Cambia tu modo de juego       
+  iteminfo:
+    description: Mira la informacion NBT de tu item
+        
