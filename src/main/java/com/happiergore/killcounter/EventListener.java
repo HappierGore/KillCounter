@@ -1,15 +1,18 @@
 package com.happiergore.killcounter;
 
 import comandos.*;
+import events.HeldItem;
 import events.OnSomeDeath;
+import events.SomeDamaged;
 import static helper.IOHelper.ExportResource;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mysqlite.MySQLite;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import placeholders.PlaceHolders;
 
@@ -18,7 +21,7 @@ import placeholders.PlaceHolders;
  * @author HappierGore
  */
 public final class EventListener extends JavaPlugin implements Listener {
-    
+
     @Override
     public void onEnable() {
 
@@ -49,9 +52,24 @@ public final class EventListener extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this, this);
     }
 
+    //****************
+    // EVENTOS
+    //****************
+    String dbPath = getDataFolder().getAbsolutePath();
+
     @EventHandler
     public void EntityDeathEvent(EntityDeathEvent e) {
-        OnSomeDeath.registerKill(e, getDataFolder().getAbsolutePath());
+        OnSomeDeath.registerKill(e, dbPath);
+    }
+
+    @EventHandler
+    public void PlayerItemHeldEvent(PlayerItemHeldEvent e) {
+        HeldItem.helding(e, dbPath);
+    }
+
+    @EventHandler
+    public void EntityCombustEvent(EntityDamageEvent e) {
+        SomeDamaged.onDamaged(e, dbPath);
     }
 
     //********************
@@ -69,6 +87,7 @@ public final class EventListener extends JavaPlugin implements Listener {
                 Logger.getLogger(EventListener.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
     }
 
     private boolean checkDependencies() {

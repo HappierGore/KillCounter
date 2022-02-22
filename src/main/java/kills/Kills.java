@@ -1,4 +1,5 @@
 package kills;
+
 import mysqlite.MySQLite;
 import org.bukkit.entity.EntityType;
 
@@ -51,9 +52,32 @@ public abstract class Kills {
         }
     }
 
+    public void loadFromDB(String mobType, int amount) {
+        switch (mobType.toLowerCase()) {
+            case "zombies": {
+                this.zombies = amount;
+            }
+            case "totalmobs": {
+                this.totalMobs = amount;
+            }
+            case "players": {
+                this.players = amount;
+            }
+        }
+    }
+
     public void updateDB(String dbPath, boolean isItem) {
         MySQLite sql = new MySQLite(dbPath.replace('\\', '/') + "/KillCounter.db");
         sql.updateTotalMobs(this.UUID, this.totalMobs, isItem);
+    }
+
+    public void getDB(String path) {
+        MySQLite sql = new MySQLite(path.replace('\\', '/') + "/KillCounter.db");
+
+    }
+    
+    public String getUUID(){
+        return this.UUID;
     }
 
     @Override
@@ -67,6 +91,7 @@ public abstract class Kills {
         sb.append('}');
         return sb.toString();
     }
+
     //Constructor
     public Kills(String UUID) {
         this.UUID = UUID;

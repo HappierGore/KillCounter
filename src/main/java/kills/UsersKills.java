@@ -2,8 +2,6 @@ package kills;
 
 import java.util.HashMap;
 import java.util.Map;
-import mysqlite.MySQLite;
-import org.bukkit.entity.EntityType;
 
 /**
  *

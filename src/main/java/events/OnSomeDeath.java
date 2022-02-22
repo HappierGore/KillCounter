@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package events;
 
 import de.tr7zw.nbtapi.NBTItem;
@@ -10,6 +6,7 @@ import kills.ItemKills;
 import kills.UsersKills;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -33,10 +30,10 @@ public class OnSomeDeath {
 
         pKills.add(e.getEntityType());
         pKills.updateDB(path, false);
-
-        player.sendMessage("Player Stats:");
-        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Mobs totales asesinados: %killCounter_totalMobs%"));
-        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Zombies totales asesinados: %killCounter_zombies%"));
+//
+//        player.sendMessage("Player Stats:");
+//        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Mobs totales asesinados: %killCounter_totalMobs%"));
+//        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Zombies totales asesinados: %killCounter_zombies%"));
 //
         //Register item kill
         final ItemStack item = player.getInventory().getItemInMainHand();
@@ -60,9 +57,9 @@ public class OnSomeDeath {
         objKills.add(e.getEntityType());
         objKills.updateDB(path, true);
 
-        player.sendMessage("Weapon Stats:");
-        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Mobs totales asesinados: %killCounter_weapon_totalMobs%"));
-        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Zombies totales asesinados: %killCounter_weapon_zombies%"));
+//        player.sendMessage("Weapon Stats:");
+//        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Mobs totales asesinados: %killCounter_weapon_totalMobs%"));
+//        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Zombies totales asesinados: %killCounter_weapon_zombies%"));
 
     }
 }
