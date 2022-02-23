@@ -2,6 +2,7 @@ package kills;
 
 import java.util.HashMap;
 import java.util.Map;
+import mysqlite.ItemDB;
 
 /**
  *
@@ -20,12 +21,10 @@ public final class ItemKills extends Kills {
 
     public static String getItemMapStr() {
         String result = "Item stats:\n";
-        for (Map.Entry<String, ItemKills> entry : itemKills.entrySet()) {
-            result += entry.getKey() + ": " + entry.getValue().toString() + "\n";
-        }
+        result = itemKills.entrySet().stream().map(entry -> entry.getKey() + ": " + entry.getValue().toString() + "\n").reduce(result, String::concat);
         return result;
     }
-    
+
     public static ItemKills getObj(String UUID) {
         ItemKills iKills = ItemKills.itemKills.containsKey(UUID) ? ItemKills.itemKills.get(UUID) : new ItemKills(UUID);
 
@@ -38,6 +37,14 @@ public final class ItemKills extends Kills {
     //Constructor
     public ItemKills(String UUID) {
         super(UUID);
+    }
+
+    @Override
+    public void updateDB(String dbPath) {
+        ItemDB sql = new ItemDB(dbPath.replace('\\', '/') + "/KillCounter.db");
+        sql.updateTotalMobs(this.getUUID(), this.getTotalMobs());
+        sql.updateZombies(this.getUUID(), this.getZombies());
+        sql.updatePlayers(this.getUUID(), this.getPlayers());
     }
 
 }

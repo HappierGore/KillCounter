@@ -49,18 +49,18 @@ public class PlaceHolders extends PlaceholderExpansion {
         String pUUID = player.getUniqueId().toString();
 
         if (params.equals("players")) {
-            return Integer.toString(UsersKills.playerKills.get(pUUID).get("players"));
+            return Integer.toString(UsersKills.playerKills.get(pUUID).getPlayers());
         }
         if (params.equals("totalMobs")) {
-            return Integer.toString(UsersKills.playerKills.get(pUUID).get("totalMobs"));
+            return Integer.toString(UsersKills.playerKills.get(pUUID).getTotalMobs());
         }
         if (params.equals("zombies")) {
-            return Integer.toString(UsersKills.playerKills.get(pUUID).get("zombies"));
+            return Integer.toString(UsersKills.playerKills.get(pUUID).getZombies());
         }
         if (params.contains("weapon")) {
             final ItemStack item = player.getInventory().getItemInMainHand();
             if (item.getType() == Material.AIR) {
-                return null;
+                return "Invalid item";
             }
 
             NBTItem nbti = new NBTItem(item);
@@ -71,14 +71,15 @@ public class PlaceHolders extends PlaceholderExpansion {
             System.out.println("Data: " + ItemKills.getItemMapStr());
 
             if (params.endsWith("players")) {
-                return Integer.toString(ItemKills.itemKills.get(uuid).get("players"));
+                return Integer.toString(ItemKills.itemKills.get(uuid).getPlayers());
             }
             if (params.endsWith("totalMobs")) {
-                return Integer.toString(ItemKills.itemKills.get(uuid).get("totalMobs"));
+                return Integer.toString(ItemKills.itemKills.get(uuid).getTotalMobs());
             }
             if (params.endsWith("zombies")) {
-                return Integer.toString(ItemKills.itemKills.get(uuid).get("zombies"));
+                return Integer.toString(ItemKills.itemKills.get(uuid).getZombies());
             }
+            return "Invalid counter type.";
         }
         return null;
     }

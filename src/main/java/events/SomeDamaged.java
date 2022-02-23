@@ -6,7 +6,7 @@ package events;
 
 import de.tr7zw.nbtapi.NBTItem;
 import kills.ItemKills;
-import mysqlite.MySQLite;
+import mysqlite.ItemDB;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -14,9 +14,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 /**
  * @author HappierGore
  */
-public class SomeDamaged {
+public final class SomeDamaged {
 
-    public static void onDamaged(EntityDamageEvent e, String dbPath) {
+    public static void untrackItem(EntityDamageEvent e, String dbPath) {
         if (e.getEntityType() == EntityType.DROPPED_ITEM) {
             NBTItem nbti = new NBTItem(((Item) e.getEntity()).getItemStack());
 
@@ -26,10 +26,10 @@ public class SomeDamaged {
 
             String uuid = nbti.getString("UUID");
 
-            if (nbti.hasKey("UUID") && ItemKills.itemKills.containsKey(uuid)) {
-                MySQLite sql = new MySQLite(dbPath.replace('\\', '/') + "/KillCounter.db");
+            if (ItemKills.itemKills.containsKey(uuid)) {
+                ItemDB sql = new ItemDB(dbPath.replace('\\', '/') + "/KillCounter.db");
                 ItemKills.itemKills.remove(uuid);
-                sql.removeItem(uuid);
+                sql.remove(uuid);
             }
         }
     }

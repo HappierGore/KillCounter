@@ -4,9 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import java.util.UUID;
 import kills.ItemKills;
 import kills.UsersKills;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author HappierGore
  */
-public class OnSomeDeath {
+public final class OnSomeDeath {
 
     public static void registerKill(EntityDeathEvent e, String path) {
 
@@ -29,7 +27,7 @@ public class OnSomeDeath {
         UsersKills pKills = UsersKills.getObj(player.getUniqueId().toString());
 
         pKills.add(e.getEntityType());
-        pKills.updateDB(path, false);
+        pKills.updateDB(path);
 //
 //        player.sendMessage("Player Stats:");
 //        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Mobs totales asesinados: %killCounter_totalMobs%"));
@@ -55,7 +53,7 @@ public class OnSomeDeath {
         ItemKills objKills = ItemKills.getObj(uuid);
 
         objKills.add(e.getEntityType());
-        objKills.updateDB(path, true);
+        objKills.updateDB(path);
 
 //        player.sendMessage("Weapon Stats:");
 //        player.sendMessage(PlaceholderAPI.setPlaceholders(player, "Mobs totales asesinados: %killCounter_weapon_totalMobs%"));

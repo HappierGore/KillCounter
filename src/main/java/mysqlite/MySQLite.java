@@ -3,27 +3,23 @@ package mysqlite;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import kills.ItemKills;
-import kills.UsersKills;
+import java.sql.SQLException;
 
 /**
  * @author HappierGore
  */
-public class MySQLite {
+public abstract class MySQLite {
 
-    String path;
+    private final String path;
+    public final String table;
 
-    public MySQLite(String path) {
+    public MySQLite(String path, String table) {
         this.path = "jdbc:sqlite:" + path;
+        this.table = table;
     }
 
-    /**
-     * Connect to a sample database
-     */
-    private Connection connect() {
+    public Connection connect() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(path);
@@ -33,23 +29,13 @@ public class MySQLite {
         return conn;
     }
 
-    /**
-     * Update data of a warehouse specified by the id
-     *
-     * @param UUID      UUID
-     * @param totalMobs Mob totales
-     * @param isItem    It's an item?
-     */
-    public void updateTotalMobs(String UUID, int totalMobs, boolean isItem) {
+    public void updateTotalMobs(String UUID, int totalMobs) {
 
-        String table = isItem ? "ItemsKills" : "UsersKills";
+        String sql = "INSERT INTO " + table + "(uuid, totalMobs) VALUES(?, ?) ON CONFLICT(uuid) DO UPDATE SET totalMobs=excluded.totalMobs";
+        //INSERT INTO UsersKills(uuid, totalMobs) VALUES("8d43c05c-2a42-38d4-ae7e-4a83036327ed",100) ON CONFLICT(uuid) DO UPDATE SET totalMobs=excluded.totalMobs
 
-        String sql = "INSERT OR REPLACE INTO " + table + "(uuid,totalMobs) VALUES(?,?)";
-        //INSERT OR REPLACE INTO UsersKills(uuid,totalMobs) VALUES("TE",5)
-        System.out.println(sql);
-
-        try (Connection conn = this.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the corresponding param
             pstmt.setString(1, UUID);
@@ -59,53 +45,55 @@ public class MySQLite {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
     }
 
-    public void getIemData(String UUID) {
-        if (ItemKills.itemKills.containsKey(UUID)) {
-            return;
-        }
+    public void updateZombies(String UUID, int totalZombies) {
+        String sql = "INSERT INTO " + table + "(uuid, zombies) VALUES(?, ?) ON CONFLICT(uuid) DO UPDATE SET zombies=excluded.zombies";
 
-        String table = "ItemsKills";
-
-        String sql = "SELECT * FROM " + table + " WHERE uuid = \"" + UUID + "\"";
-        //INSERT OR REPLACE INTO UsersKills(uuid,totalMobs) VALUES("TE",5)
-        System.out.println(sql);
-
-        try (Connection conn = this.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the corresponding param
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                ItemKills itemKills = new ItemKills(rs.getString("uuid"));
-                itemKills.loadFromDB("zombies", rs.getInt("zombies"));
-                itemKills.loadFromDB("totalMobs", rs.getInt("totalMobs"));
-                itemKills.loadFromDB("players", rs.getInt("players"));
-                ItemKills.itemKills.put(itemKills.getUUID(), itemKills);
-            }
-
+            pstmt.setString(1, UUID);
+            pstmt.setInt(2, totalZombies);
+            // update 
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void removeItem(String UUID) {
+    public void updatePlayers(String UUID, int totalPlayers) {
+        String sql = "INSERT INTO " + table + "(uuid, players) VALUES(?, ?) ON CONFLICT(uuid) DO UPDATE SET players=excluded.players";
 
-        String table = "ItemsKills";
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, UUID);
+            pstmt.setInt(2, totalPlayers);
+            // update 
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void remove(String UUID) {
 
         String sql = "DELETE FROM " + table + " WHERE uuid = \"" + UUID + "\"";
 
         System.out.println(sql);
 
         try (Connection conn = this.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-        pstmt.executeUpdate();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
+    public abstract void loadData(String UUID);
 }

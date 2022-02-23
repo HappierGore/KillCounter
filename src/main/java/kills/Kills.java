@@ -1,6 +1,5 @@
 package kills;
 
-import mysqlite.MySQLite;
 import org.bukkit.entity.EntityType;
 
 /**
@@ -19,23 +18,6 @@ public abstract class Kills {
     //*****************************
     //INTERFACE
     //*****************************
-    public int get(String request) {
-        switch (request.toLowerCase()) {
-            case "players" -> {
-                return this.players;
-            }
-            case "zombies" -> {
-                return this.zombies;
-            }
-            case "totalmobs" -> {
-                return this.totalMobs;
-            }
-            default -> {
-                return 0;
-            }
-        }
-    }
-
     public void add(EntityType entityType) {
         switch (entityType) {
             case PLAYER -> {
@@ -66,17 +48,9 @@ public abstract class Kills {
         }
     }
 
-    public void updateDB(String dbPath, boolean isItem) {
-        MySQLite sql = new MySQLite(dbPath.replace('\\', '/') + "/KillCounter.db");
-        sql.updateTotalMobs(this.UUID, this.totalMobs, isItem);
-    }
+    public abstract void updateDB(String dbPath);
 
-    public void getDB(String path) {
-        MySQLite sql = new MySQLite(path.replace('\\', '/') + "/KillCounter.db");
-
-    }
-    
-    public String getUUID(){
+    public String getUUID() {
         return this.UUID;
     }
 
@@ -95,6 +69,18 @@ public abstract class Kills {
     //Constructor
     public Kills(String UUID) {
         this.UUID = UUID;
+    }
+
+    public int getPlayers() {
+        return players;
+    }
+
+    public int getZombies() {
+        return zombies;
+    }
+
+    public int getTotalMobs() {
+        return totalMobs;
     }
 
 }

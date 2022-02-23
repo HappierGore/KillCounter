@@ -2,7 +2,10 @@ package com.happiergore.killcounter;
 
 import comandos.*;
 import events.HeldItem;
+import events.OnItemDespawn;
 import events.OnSomeDeath;
+import events.PlayerJoin;
+import events.PlayerLeave;
 import events.SomeDamaged;
 import static helper.IOHelper.ExportResource;
 import java.io.File;
@@ -12,7 +15,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import placeholders.PlaceHolders;
 
@@ -64,12 +70,28 @@ public final class EventListener extends JavaPlugin implements Listener {
 
     @EventHandler
     public void PlayerItemHeldEvent(PlayerItemHeldEvent e) {
-        HeldItem.helding(e, dbPath);
+        HeldItem.loadItemData(e, dbPath);
     }
 
     @EventHandler
     public void EntityCombustEvent(EntityDamageEvent e) {
-        SomeDamaged.onDamaged(e, dbPath);
+        SomeDamaged.untrackItem(e, dbPath);
+    }
+
+    @EventHandler
+    public void ItemDespawnEvent(ItemDespawnEvent e) {
+        OnItemDespawn.untrackItem(e, dbPath);
+    }
+
+    @EventHandler
+    public void PlayerJoinEvent(PlayerJoinEvent e) {
+        PlayerJoin.loadPlayerData(e, dbPath);
+    }
+    
+    @EventHandler
+    public void PlayerQuitEvent(PlayerQuitEvent e){
+        PlayerLeave.removePlayerFromMemory(e);
+        
     }
 
     //********************

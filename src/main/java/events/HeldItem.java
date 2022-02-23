@@ -5,7 +5,7 @@
 package events;
 
 import de.tr7zw.nbtapi.NBTItem;
-import mysqlite.MySQLite;
+import mysqlite.ItemDB;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
@@ -14,10 +14,10 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author HappierGore
  */
-public class HeldItem {
+public final class HeldItem {
 
-    public static void helding(PlayerItemHeldEvent e, String dbPath) {
-        MySQLite sql = new MySQLite(dbPath.replace('\\', '/') + "/KillCounter.db");
+    public static void loadItemData(PlayerItemHeldEvent e, String dbPath) {
+        ItemDB sql = new ItemDB(dbPath.replace('\\', '/') + "/KillCounter.db");
 
         final ItemStack item = e.getPlayer().getInventory().getItem(e.getNewSlot());
         
@@ -33,6 +33,6 @@ public class HeldItem {
 
         String uuid = nbti.getString("UUID");
 
-        sql.getIemData(uuid);
+        sql.loadData(uuid);
     }
 }
