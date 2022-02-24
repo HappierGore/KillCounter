@@ -12,8 +12,8 @@ import kills.ItemKills;
  */
 public class ItemDB extends MySQLite {
 
-    public ItemDB(String path) {
-        super(path, "Itemskills");
+    public ItemDB() {
+        super("Itemskills");
     }
 
     @Override

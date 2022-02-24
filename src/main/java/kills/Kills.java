@@ -1,6 +1,6 @@
 package kills;
 
-import org.bukkit.entity.EntityType;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 /**
  *
@@ -15,11 +15,14 @@ public abstract class Kills {
 
     private final String UUID;
 
-    //*****************************
-    //INTERFACE
-    //*****************************
-    public void add(EntityType entityType) {
-        switch (entityType) {
+    /**
+     * Añade 1 al contador de kills del jugador u objeto
+     *
+     * @param e Tipo de entidad a añadir al contador
+     */
+    public void add(EntityDeathEvent e) {
+
+        switch (e.getEntityType()) {
             case PLAYER -> {
                 totalMobs++;
                 players++;
@@ -34,6 +37,12 @@ public abstract class Kills {
         }
     }
 
+    /**
+     * Permite sobreescribir los datos locales por los de una base de datos.
+     *
+     * @param mobType Recibe el tipo de mob o dato a cargar de la base de datos.
+     * @param amount Recibe la cantidad de kills a establecer.
+     */
     public void loadFromDB(String mobType, int amount) {
         switch (mobType.toLowerCase()) {
             case "zombies": {
@@ -48,7 +57,12 @@ public abstract class Kills {
         }
     }
 
-    public abstract void updateDB(String dbPath);
+    /**
+     * Actualizará la base de datos de acuerdo a los valores locales del jugador
+     * u objeto
+     *
+     */
+    public abstract void updateDB();
 
     public String getUUID() {
         return this.UUID;
@@ -71,6 +85,7 @@ public abstract class Kills {
         this.UUID = UUID;
     }
 
+    //Getters
     public int getPlayers() {
         return players;
     }

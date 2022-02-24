@@ -10,12 +10,11 @@ import java.sql.SQLException;
  * @author HappierGore
  */
 public abstract class MySQLite {
-
-    private final String path;
+    
+    public static String path;
     public final String table;
 
-    public MySQLite(String path, String table) {
-        this.path = "jdbc:sqlite:" + path;
+    public MySQLite(String table) {
         this.table = table;
     }
 
@@ -35,7 +34,7 @@ public abstract class MySQLite {
         //INSERT INTO UsersKills(uuid, totalMobs) VALUES("8d43c05c-2a42-38d4-ae7e-4a83036327ed",100) ON CONFLICT(uuid) DO UPDATE SET totalMobs=excluded.totalMobs
 
         try (Connection conn = connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the corresponding param
             pstmt.setString(1, UUID);

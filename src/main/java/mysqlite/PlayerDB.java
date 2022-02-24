@@ -12,8 +12,8 @@ import kills.UsersKills;
  */
 public class PlayerDB extends MySQLite {
 
-    public PlayerDB(String path) {
-        super(path, "UsersKills");
+    public PlayerDB() {
+        super("UsersKills");
     }
 
     @Override
@@ -23,8 +23,6 @@ public class PlayerDB extends MySQLite {
         }
 
         String sql = "SELECT * FROM " + this.table + " WHERE uuid = \"" + UUID + "\"";
-
-        System.out.println("Player Data: " + sql);
 
         try (Connection conn = this.connect();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {

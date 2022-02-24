@@ -26,9 +26,8 @@ public class OnItemDespawn {
         String uuid = nbti.getString("UUID");
 
         if (ItemKills.itemKills.containsKey(uuid)) {
-            ItemDB sql = new ItemDB(dbPath.replace('\\', '/') + "/KillCounter.db");
             ItemKills.itemKills.remove(uuid);
-            sql.remove(uuid);
+            new ItemDB().remove(uuid);
         }
     }
 

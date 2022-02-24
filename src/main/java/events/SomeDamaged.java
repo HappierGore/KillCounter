@@ -27,9 +27,8 @@ public final class SomeDamaged {
             String uuid = nbti.getString("UUID");
 
             if (ItemKills.itemKills.containsKey(uuid)) {
-                ItemDB sql = new ItemDB(dbPath.replace('\\', '/') + "/KillCounter.db");
+                new ItemDB().remove(uuid);
                 ItemKills.itemKills.remove(uuid);
-                sql.remove(uuid);
             }
         }
     }

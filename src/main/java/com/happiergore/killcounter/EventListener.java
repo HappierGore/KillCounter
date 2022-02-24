@@ -11,6 +11,8 @@ import static helper.IOHelper.ExportResource;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import kills.KillControl;
+import mysqlite.MySQLite;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -30,6 +32,8 @@ public final class EventListener extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+
+        MySQLite.path = "jdbc:sqlite:" + dbPath.replace('\\', '/') + "/KillCounter.db";
 
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
@@ -87,11 +91,11 @@ public final class EventListener extends JavaPlugin implements Listener {
     public void PlayerJoinEvent(PlayerJoinEvent e) {
         PlayerJoin.loadPlayerData(e, dbPath);
     }
-    
+
     @EventHandler
-    public void PlayerQuitEvent(PlayerQuitEvent e){
+    public void PlayerQuitEvent(PlayerQuitEvent e) {
         PlayerLeave.removePlayerFromMemory(e);
-        
+
     }
 
     //********************
