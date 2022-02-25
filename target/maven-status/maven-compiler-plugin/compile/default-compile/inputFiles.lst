@@ -5,7 +5,6 @@ C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\j
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\events\PlayerJoin.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\events\SomeDamaged.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\comandos\SeeItemInfo.java
-C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\comandos\NewItem.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\events\OnItemDespawn.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\kills\ItemKills.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\events\OnSomeDeath.java
@@ -14,5 +13,6 @@ C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\j
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\events\HeldItem.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\com\happiergore\killcounter\EventListener.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\mysqlite\PlayerDB.java
+C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\helper\TextUtils.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\kills\Kills.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\KillCounter\KillCounter\src\main\java\kills\UsersKills.java

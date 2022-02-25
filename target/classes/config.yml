@@ -1,1 +1,8 @@
-## Nothing yet
+# Cada que se configure, el plugin requerirá un reinicio completo. Puedes utilizar
+# plugman para reiniciarlo (plugman reload KillCounter).
+# Configuración de las penalizaciones por matar al mismo jugador en múltiples ocasiones.
+PlayerKills:
+    #Kills máximas antes de activar la penalización
+    maxKills: 3
+    #Tiempo en minutos en el que la penalización estará activa
+    delayTime: 5

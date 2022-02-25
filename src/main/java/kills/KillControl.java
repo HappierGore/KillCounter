@@ -1,5 +1,7 @@
 package kills;
 
+import com.happiergore.killcounter.EventListener;
+import helper.IOHelper;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,9 @@ import org.bukkit.entity.Player;
 public class KillControl {
 
     public static final Map<Player, Map<String, KillControl>> killerHistory = new HashMap<>();
+
+    public int maxKills = EventListener.configYML.getInt("PlayerKills.maxKills");
+    public int penalizeTime = EventListener.configYML.getInt("PlayerKills.delayTime");
 
     public Map<String, KillControl> killHistory = new HashMap<>();
 
@@ -29,13 +34,6 @@ public class KillControl {
         this.killer = killer;
     }
 
-    /**
-     * Obtener los datos de un item utilizando su UUID almacenado en su NBT
-     *
-     * @param killer Player quien mató
-     * @param victimUUID UUID de la víctima
-     * @return ItemKills object, ya sea uno existente, o uno nuevo.
-     */
     public static KillControl getObj(Player killer, String victimUUID) {
 
         KillControl control;
@@ -64,7 +62,7 @@ public class KillControl {
 
     public void addKill() {
         lastDeath = Calendar.getInstance();
-        if (++totalKills > 3) {
+        if (++totalKills > maxKills) {
             penalize();
         }
     }
@@ -83,7 +81,7 @@ public class KillControl {
         }
 
         delayTime = Calendar.getInstance();
-        delayTime.add(Calendar.MINUTE, 3);
+        delayTime.add(Calendar.MINUTE, penalizeTime);
 
         int remainingTime = delayTime.get(Calendar.MINUTE) - lastDeath.get(Calendar.MINUTE);
 

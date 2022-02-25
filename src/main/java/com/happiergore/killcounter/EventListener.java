@@ -8,11 +8,12 @@ import events.PlayerJoin;
 import events.PlayerLeave;
 import events.SomeDamaged;
 import static helper.IOHelper.ExportResource;
+import helper.TextUtils;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import kills.KillControl;
 import mysqlite.MySQLite;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -21,6 +22,7 @@ import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import placeholders.PlaceHolders;
 
@@ -30,6 +32,8 @@ import placeholders.PlaceHolders;
  */
 public final class EventListener extends JavaPlugin implements Listener {
 
+    public static FileConfiguration configYML;
+
     @Override
     public void onEnable() {
 
@@ -38,6 +42,8 @@ public final class EventListener extends JavaPlugin implements Listener {
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
+
+        configYML = getConfig();
 
         //Crear config.yml en caso de que no exista
         saveDefaultConfig();
@@ -53,10 +59,15 @@ public final class EventListener extends JavaPlugin implements Listener {
         //Comandos
         registerCommands();
 
-        //Registrar placeholders
-        new PlaceHolders().register();
+        StringBuilder enabledMsg = new StringBuilder();
+        enabledMsg.append("&9********************\n\n");
+        enabledMsg.append("&bKillCounter cargado correctamente\n");
+        enabledMsg.append("&b¡Gracias por tu preferencia!\n");
+        enabledMsg.append("&6Autor: HappierGore");
+        enabledMsg.append("&9Discord: &nHappierGore#\n\n");
+        enabledMsg.append("&9********************\n");
 
-        System.out.println("Cargado correctamente!");
+        System.out.println(TextUtils.parseColor(enabledMsg.toString()));
 
         //Registrar eventos
         getServer().getPluginManager().registerEvents(this, this);
@@ -119,15 +130,21 @@ public final class EventListener extends JavaPlugin implements Listener {
     private boolean checkDependencies() {
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
-            System.out.println("No se encontró PlaceholderAPI, este plugin es necesario.");
+            System.out.println("******* ADVERTENCIA *******\n\nNo se encontró PlaceholderAPI, omitiendo...\n\n");
+        } else {
+            //Registrar placeholders
+            new PlaceHolders().register();
+        }
+        if (getServer().getPluginManager().getPlugin("NBTAPI") == null) {
+            System.out.println("************** ERROR **************\n\nNo se encontró NBTI API. Este plugin es necesario para funcionar.\nLink: https://www.spigotmc.org/resources/nbt-api.7939/\n\n***********************************");
             getServer().getPluginManager().disablePlugin(this);
             return false;
         }
+
         return true;
     }
 
     private void registerCommands() {
-        this.getCommand("newItem").setExecutor(new NewItem());
         this.getCommand("iteminfo").setExecutor(new SeeItemInfo());
     }
 }
